@@ -3,7 +3,6 @@
  */
 
 import scala.io.Source
-import scala.util.matching.Regex
 
 object day1 {
 	def main(args: Array[String]): Unit = {
@@ -11,7 +10,6 @@ object day1 {
 
 		var part1 = 0
 		var part2 = 0
-
 		
 		for (line <- source.getLines()) {
 			val input = line.split(" ")
