@@ -12,6 +12,7 @@ object day1 {
 		var part2 = 0
 		
 		for (line <- source.getLines()) {
+			// Process input
 			val input = line.split(" ")
 			val range = input(0).split("-")
 			val low = range(0).toInt
