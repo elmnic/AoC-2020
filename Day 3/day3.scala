@@ -4,8 +4,7 @@
 
 import scala.io.Source
 
-object day1 {
-
+object day3 {
 	class Slope(startX: Int, startY: Int) {
 		var x = startX
 		var y = startY
@@ -34,8 +33,11 @@ object day1 {
 		 * Use the defined slope gradients to look at specific positions in the current line
 		 * and count the number of trees for each slope
 		 */
+
+		 // Traverse along Y-axis
 		for (line <- source.getLines()) {
 			
+			// Traverse along X-axis
 			for (char <- line) {
 
 				// Examine each slope
