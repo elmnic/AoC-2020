@@ -5,7 +5,6 @@
 import scala.io.Source
 
 object day5 {
-
 	def main(args: Array[String]): Unit = {
 		val source = Source.fromFile("input.txt")
 
@@ -16,21 +15,21 @@ object day5 {
 		var seatIDs = scala.collection.mutable.Map[String, Int]()
 		for (line <- source.getLines()) {
 			
-			val colLine = line.take(7)
-			val rowLine = line.takeRight(3)
+			val colPart = line.take(7)
+			val rowPart = line.takeRight(3)
 			var rows = List.range(0, 128)
 			var cols = List.range(0, 8)
 			
 			// Get the row
-			for (char <- colLine) {
+			for (char <- colPart) {
 				char match {
 					case 'F' => rows = rows.take(rows.length/2)
-					case 'B' => rows = rows.takeRight((rows.length/2))
+					case 'B' => rows = rows.takeRight(rows.length/2)
 				}
 			}
 			
 			// Get the col
-			for (char <- rowLine) {
+			for (char <- rowPart) {
 				char match {
 					case 'L' => cols = cols.take(cols.length/2)
 					case 'R' => cols = cols.takeRight(cols.length/2)
