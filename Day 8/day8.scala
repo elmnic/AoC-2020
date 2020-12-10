@@ -12,55 +12,87 @@ object day8 {
 		val source = Source.fromFile("input.txt")
 
 		var part1 = 0
-		var part2 = 0
+		var part2 = Int.MinValue
 		
-		var bootCode = (for (line <- source.getLines()) yield line.split(" ").toList).toSeq
+		val input = (for (line <- source.getLines()) yield line.split(" ").toList).toList
 
 		var opSet = scala.collection.mutable.Set[(List[String], Int)]()
 
+		/**
+		 * Common return function for execution.
+		 * 
+		 * Clears the loop-detecting Set for the next execution
+		 * 
+		 * Returns the result
+		 */
 		def ret(result: Int): Int = {
 			opSet.clear()
 			result
 		}
 
-		def executePart1(code: List[String], index: Int, acc: Int = 0): Int = code match {
-			// Case runs if the code with the given index hasn't been run yet
-			case op :: arg :: Nil if (opSet.add((code, index))) => op match {
-				case "nop" => executePart1(bootCode(index + 1), 			index + 1, 			acc)
-				case "acc" => executePart1(bootCode(index + 1), 			index + 1, 			acc + arg.toInt)
-				case "jmp" => executePart1(bootCode(index + arg.toInt), 	index + arg.toInt, 	acc)
+		def executePart1(bootCode: List[List[String]], index: Int = 0, acc: Int = 0): Int = bootCode(index) match {
+			// Checks if the current code has already been run
+			case op :: arg :: Nil if (opSet.add((bootCode(index), index))) => op match {
+				case "nop" => executePart1(bootCode, index + 1, acc)
+				case "acc" => executePart1(bootCode, index + 1, acc + arg.toInt)
+				case "jmp" => executePart1(bootCode, index + arg.toInt, acc)
 			}
 
-			// Case for when a code already has been run
+			// Return result and clear Set of operations for 
 			case _ => ret(acc)
 		}
 
-		def executePart2(code: List[String], index: Int, acc: Int = 0): Int = code match {
-			case op :: arg :: Nil if (opSet.add((code, index))) => index match {
-				case _ if (index + 1 >= bootCode.size) => op match {
-					case "nop" => println(code + " " + index); executePart2(Nil, index + 1, acc)
-					case "acc" => println(code + " " + index); executePart2(Nil, index + 1, acc + arg.toInt)
-					case "jmp" => println(code + " " + index); executePart2(Nil, index + arg.toInt, acc)
-				}
-				case _ => op match {
-					case "nop" => println(code + " " + index); executePart2(bootCode(index + 1), index + 1, acc)
-					case "acc" => println(code + " " + index); executePart2(bootCode(index + 1), index + 1, acc + arg.toInt)
-					case "jmp" => println(code + " " + index); executePart2(bootCode(index + arg.toInt), index + arg.toInt, acc)
-				}
+		def executePart2(bootCode: List[List[String]], index: Int = 0, acc: Int = 0): (Boolean, Int) = bootCode(index) match {
+
+			// 
+			case op :: arg :: Nil if (opSet.add((bootCode(index), index))) => op match {
+
+				// Index is below the bottom instruction, terminate successfully
+				case "nop" if (index + 1 >= bootCode.size) 			=> (true, ret(acc))
+				case "acc" if (index + 1 >= bootCode.size)			=> (true, ret(acc + arg.toInt))
+				case "jmp" if (index + arg.toInt >= bootCode.size) 	=> (true, ret(acc))
+				
+				// Normal execution
+				case "nop" => executePart2(bootCode, index + 1, 		acc)
+				case "acc" => executePart2(bootCode, index + 1, 		acc + arg.toInt)
+				case "jmp" => executePart2(bootCode, index + arg.toInt, acc)
 			}
 
-			// TODO: Differentiate loop and end-of-instruction termination
-			case Nil => ret(acc)
-			case _ => ret(acc)
+			// opSet.add failed, loop detected
+			case _ => (false, ret(acc))
 		}
 		
-		part1 = executePart1(bootCode(0), 0)
-
-		part2 = executePart2(bootCode(0), 0)
-		
+		// Retrieve the result
+		part1 = executePart1(input)
 		println("Part 1: " + part1)
-		println("Part 2: " + part2)
+		
+		for ((code, index) <- input.zipWithIndex.filterNot(_._1.contains("acc"))) {
+			/** 
+			 * Slice the boot code into pre- and post-sections depending on the current code and its Index
+			 * Build it up like [Pre, current, Post] and then run executePart2 on each iteration
+			 */
+			val preCode = input.slice(0, index).filterNot(_.isEmpty)
+			val postCode = input.slice(index + 1, input.size).filterNot(_.isEmpty)
+			val curCode = {code match {
+				case op :: arg :: Nil if (op == "jmp") => List("nop", arg)
+				case op :: arg :: Nil if (op == "nop") => List("jmp", arg)
+				case _ => code
+			}}
 
+			// Rebuild the boot code
+			val uncorruptedCode = List(
+				preCode.flatten,
+				curCode,
+				postCode.flatten
+			).flatten.grouped(2).toList
+
+			// Retrieve the result
+			val result = executePart2(uncorruptedCode)
+			if (result._1)
+				part2 = result._2
+		}
+
+		println("Part 2: " + part2)
 		source.close()
 	}
 }
