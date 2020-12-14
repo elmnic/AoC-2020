@@ -40,17 +40,17 @@ object day9 {
 		  * 
 		  * Create a stream that scans left-to-right and sums the values
 		  * Take the numbers up to the index of the last number that caused the total sum to be == Part1
-		  * E.g. (7) = [3,4,5].take(2) 3+4=7
+		  * E.g. (7) = [3,4,5].take(indexOf(2)) 3+4=7
 		  * 
 		  * Return the sum of the min and max in the collection
 		  */
 		for ((num, idx) <- input.zipWithIndex) {
 			
 			val segment = input.takeRight(input.length - idx)
-			val sums = segment.toStream.scanLeft(0L)(_ + _)
+			val sums = segment.toStream.scanLeft(0L)(_ + _) // Lazy summing left-to-right
 			val nums = segment.take(sums.lastIndexWhere(_ == part1))
 
-			if (!nums.isEmpty && nums.length >= 2)
+			if (nums.length >= 2)
 				part2 = nums.min + nums.max
 			
 		}
