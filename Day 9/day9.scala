@@ -48,7 +48,7 @@ object day9 {
 			
 			val segment = input.takeRight(input.length - idx)
 			val sums = segment.toStream.scanLeft(0L)(_ + _) // Lazy summing left-to-right
-			val nums = segment.take(sums.lastIndexWhere(_ == part1))
+			val nums = segment.take(sums.lastIndexWhere(_ == part1)) // Take the segment up until where the sum is equal 'part1'
 
 			if (nums.length >= 2)
 				part2 = nums.min + nums.max

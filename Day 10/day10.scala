@@ -13,13 +13,13 @@ object day10 {
 		var part2 = 0L
 		
 		val initialInput = List(0L) ::: (for (line <- source.getLines()) yield line.toLong).toList
-		val input = initialInput ::: List(initialInput.max + 3L)
+		val input = (initialInput ::: List(initialInput.max + 3L)).sorted
 
 		/**
 		  * Part 1, Sort the list and find all groups of 2 that have a difference of 1 or 3
 		  */
-		val res1 = input.sorted.sliding(2).filter(x => x(1) - x(0) == 1L)
-		val res3 = input.sorted.sliding(2).filter(x => x(1) - x(0) == 3L)
+		val res1 = input.sliding(2).filter(x => x(1) - x(0) == 1L)
+		val res3 = input.sliding(2).filter(x => x(1) - x(0) == 3L)
 		part1 = res1.size * res3.size
 
 

@@ -26,7 +26,7 @@ object day7 {
 	
 		/**
 		  * Part 1, Find the number of bags that eventually will contain a Shiny Gold bag
-		  * Recursively traverse depth-first until either Shiny Gold or nothing is found
+		  * Recursively traverse depth-first until either a 'Shiny Gold' or 'No Other' is found
 		  * 
 		  * The map only contains the key color of the contained bags
 		  */
@@ -65,7 +65,7 @@ object day7 {
 			}
 		}
 
-		part2 += part2Check(part2Map("shiny gold"))
+		part2 = part2Check(part2Map("shiny gold"))
 
 		println("Part 1: " + part1)
 		println("Part 2: " + part2)
