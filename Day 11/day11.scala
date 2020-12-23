@@ -7,7 +7,6 @@ import scala.util.matching.Regex
 import scala.collection.immutable.Nil
 
 object day11 {
-
 	def main(args: Array[String]): Unit = {
 		val source = Source.fromFile("input.txt")
 		var part1 = 0
@@ -55,7 +54,7 @@ object day11 {
 		}
 		
 		/**
-		  * Part 2, Same thing but new rules
+		  * Part 2, Same principle but iterate along each direction
 		  */
 		stable = false
 		prev = input
@@ -64,6 +63,12 @@ object day11 {
 			(for (row <- 0 until prev.length) yield 
 				(for (col <- 0 until prev(row).length) yield {
 
+
+					/**
+					  * TODO: Attempt to do this more functionally like in Part 1 using 'yield'
+					  * TODO: remove !visibleSeats.contains and just yield the first instance of '#' or 'L',
+					  * TODO: otherwise yield nothing. The resulting list of seats should still contain the correct amount of '#'
+					  */
 					// Find the surrounding visible seats
 					var visibleSeats = scala.collection.mutable.Map[(Int, Int), Char]()
 
@@ -76,19 +81,19 @@ object day11 {
 							// Exclude the current seat
 							if (!(x == 0 && y == 0)) {
 								
-								// Expand the direction until outside the board
+								// Expand the direction until outside the board or an occurance is found
 								var rad = 1
 								while (row + y*rad >= 0 && row + y*rad < prev.length &&
 									col + x*rad >= 0 && col + x*rad < prev(row).length &&
 									!visibleSeats.contains((y, x))) {
 									
-									// If Occupied or Empty, add to Map
+									// Find first occurance of Occupied or Empty, add to Map
 									if (prev(row + y*rad)(col + x*rad) == '#' || prev(row + y*rad)(col + x*rad) == 'L')
 										visibleSeats.put((y, x), prev(row + y*rad)(col + x*rad))
 
 									rad += 1
 								}
-								
+
 								// Place default value in dir-map
 								if (!visibleSeats.contains((y, x)))
 									visibleSeats.put((y, x), '.')
