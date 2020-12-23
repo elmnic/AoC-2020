@@ -4,7 +4,6 @@
 
 import scala.io.Source
 import scala.util.matching.Regex
-import scala.collection.immutable.Nil
 
 object day12 {
 
@@ -31,6 +30,11 @@ object day12 {
 			this.dir = dir
 		}
 		
+		/**
+		  * Update the position using the current position and by 
+		  * constructing a new Vec with the "amount" in the corresponding axis
+		  */
+		
 		def movePart1(action: String, amount: Int): Unit = action match {
 			case "N" => this.pos = this.pos + new Vec(0, amount)
 			case "S" => this.pos = this.pos + new Vec(0, -amount)
@@ -40,11 +44,17 @@ object day12 {
 				this.pos = this.pos + this.dir*amount
 			}
 		}
+
+		// Easy 90-degree rotation using the pattern (x,y) => (y, -x)
 		def rotatePart1(degrees: Int, dir: Vec): Unit = degrees match {
 			case 0 => this.dir = dir
 			case _ => rotatePart1(degrees - 1, new Vec(dir.y, -dir.x))
 		}
-		
+
+		/**
+		  * Update the position using the current position and by 
+		  * constructing a new Vec with the "amount" in the corresponding axis
+		  */
 		def movePart2(action: String, amount: Int): Unit = action match {
 			case "N" => this.dir = this.dir + new Vec(0, amount)
 			case "S" => this.dir = this.dir + new Vec(0, -amount)
@@ -54,6 +64,8 @@ object day12 {
 				this.pos = this.pos + this.dir*amount
 			}
 		}
+
+		// Easy 90-degree rotation using the pattern (x,y) => (y, -x)
 		def rotatePart2(degrees: Int, dir: Vec): Unit = degrees match {
 			case 0 => this.dir = dir
 			case _ => rotatePart2(degrees - 1, new Vec(dir.y, -dir.x))
@@ -66,9 +78,9 @@ object day12 {
 		var part2 = 0
 		
 		/**
-		  * Read the input
-		  * Map each line to be a (String, Int)
-		  * Convert every L-rotation to the equivalent R-rotation
+		  * Read the input.
+		  * Map each line to be a (String, Int).
+		  * Convert every L-rotation to the equivalent R-rotation.
 		  */
 		val input = (for (line <- source.getLines()) yield line).toList.map(t => {
 			val (dir, arg) = t.splitAt(1)
@@ -83,6 +95,7 @@ object day12 {
 			}
 		})
 
+		// Run every action using the ship's methods
 		def runPart1(input: List[(String, Int)]): Int = {
 			val ship = new Ship(new Vec(1, 0))
 			for ((action, amount) <- input) {
@@ -94,6 +107,7 @@ object day12 {
 			Math.abs(ship.pos.x) + Math.abs(ship.pos.y)
 		}
 
+		// Run every action using the ship's methods
 		def runPart2(input: List[(String, Int)]): Int = {
 			val ship = new Ship(new Vec(10, 1))
 			for ((action, amount) <- input) {
