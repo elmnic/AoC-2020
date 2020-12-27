@@ -15,7 +15,7 @@ object day12 {
 			this.x = x
 			this.y = y
 		}
-		
+
 		// TODO: Overload "+="
 		def +(that: Vec) = new Vec(this.x + that.x, this.y + that.y)
 		def -(that: Vec) = new Vec(this.x - that.x, this.y - that.y)
@@ -29,12 +29,12 @@ object day12 {
 			this()
 			this.dir = dir
 		}
-		
+
 		/**
-		  * Update the position using the current position and by 
+		  * Update the position using the current position and by
 		  * constructing a new Vec with the "amount" in the corresponding axis
 		  */
-		
+
 		def movePart1(action: String, amount: Int): Unit = action match {
 			case "N" => this.pos = this.pos + new Vec(0, amount)
 			case "S" => this.pos = this.pos + new Vec(0, -amount)
@@ -52,7 +52,7 @@ object day12 {
 		}
 
 		/**
-		  * Update the position using the current position and by 
+		  * Update the position using the current position and by
 		  * constructing a new Vec with the "amount" in the corresponding axis
 		  */
 		def movePart2(action: String, amount: Int): Unit = action match {
@@ -76,7 +76,7 @@ object day12 {
 		val source = Source.fromFile("input.txt")
 		var part1 = 0
 		var part2 = 0
-		
+
 		/**
 		  * Read the input.
 		  * Map each line to be a (String, Int).
@@ -89,7 +89,7 @@ object day12 {
 				case "S" => ("S", arg.toInt)
 				case "E" => ("E", arg.toInt)
 				case "W" => ("W", arg.toInt)
-				case "L" => ("R", ((360 - arg.toInt) / 90)) 
+				case "L" => ("R", ((360 - arg.toInt) / 90))
 				case "R" => ("R", arg.toInt / 90)
 				case "F" => ("F", arg.toInt)
 			}
@@ -124,6 +124,6 @@ object day12 {
 
 		println("Part 1: " + part1)
 		println("Part 2: " + part2)
-		
+
 	}
 }

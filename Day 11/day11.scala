@@ -11,21 +11,21 @@ object day11 {
 		val source = Source.fromFile("input.txt")
 		var part1 = 0
 		var part2 = 0
-		
+
 		val input = (for (line <- source.getLines()) yield line.toList).toList
 
 		/**
 		 * Part 1, Create new board from the previous one
-		 * 
+		 *
 		 * Iterate through all seats and, for each seat, iterate through the surrounding seats.
-		 * Store the number of occupied seats (#), 
+		 * Store the number of occupied seats (#),
 		 * match on the previous seat and return the new state for the seat.
 		 */
 		var stable = false
 		var prev = input
 		while (!stable) {
-			val next = 
-			(for (row <- 0 until prev.length) yield 
+			val next =
+			(for (row <- 0 until prev.length) yield
 				(for (col <- 0 until prev(row).length) yield {
 
 					// Find the surrounding occupied seats
@@ -44,7 +44,7 @@ object day11 {
 					}
 				}).toList
 			).toList
-			
+
 			// Equilibrium reached, break loop and return the occupied seats
 			if (next == prev) {
 				stable = true
@@ -52,15 +52,15 @@ object day11 {
 			}
 			prev = next
 		}
-		
+
 		/**
 		  * Part 2, Same principle but iterate along each direction
 		  */
 		stable = false
 		prev = input
 		while (!stable) {
-			val next = 
-			(for (row <- 0 until prev.length) yield 
+			val next =
+			(for (row <- 0 until prev.length) yield
 				(for (col <- 0 until prev(row).length) yield {
 
 
@@ -80,13 +80,13 @@ object day11 {
 
 							// Exclude the current seat
 							if (!(x == 0 && y == 0)) {
-								
+
 								// Expand the direction until outside the board or an occurance is found
 								var rad = 1
 								while (row + y*rad >= 0 && row + y*rad < prev.length &&
 									col + x*rad >= 0 && col + x*rad < prev(row).length &&
 									!visibleSeats.contains((y, x))) {
-									
+
 									// Find first occurance of Occupied or Empty, add to Map
 									if (prev(row + y*rad)(col + x*rad) == '#' || prev(row + y*rad)(col + x*rad) == 'L')
 										visibleSeats.put((y, x), prev(row + y*rad)(col + x*rad))
@@ -110,7 +110,7 @@ object day11 {
 					}
 				}).toList
 			).toList
-			
+
 			// Equilibrium reached, break loop and return the occupied seats
 			if (next == prev) {
 				stable = true
@@ -121,6 +121,6 @@ object day11 {
 
 		println("Part 1: " + part1)
 		println("Part 2: " + part2)
-		
+
 	}
 }

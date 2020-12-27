@@ -13,16 +13,16 @@ object day8 {
 
 		var part1 = 0
 		var part2 = Int.MinValue
-		
+
 		val input = (for (line <- source.getLines()) yield line.split(" ").toList).toList
 
 		var opSet = scala.collection.mutable.Set[(List[String], Int)]()
 
 		/**
 		 * Common return function for execution.
-		 * 
+		 *
 		 * Clears the loop-detecting Set for the next execution
-		 * 
+		 *
 		 * Returns the result
 		 */
 		def ret(result: Int): Int = {
@@ -38,20 +38,20 @@ object day8 {
 				case "jmp" => executePart1(bootCode, index + arg.toInt, acc)
 			}
 
-			// Return result and clear Set of operations for 
+			// Return result and clear Set of operations for
 			case _ => ret(acc)
 		}
 
 		def executePart2(bootCode: List[List[String]], index: Int = 0, acc: Int = 0): (Boolean, Int) = bootCode(index) match {
 
-			// 
+			//
 			case op :: arg :: Nil if (opSet.add((bootCode(index), index))) => op match {
 
 				// Index is below the bottom instruction, terminate successfully
 				case "nop" if (index + 1 >= bootCode.size) 			=> (true, ret(acc))
 				case "acc" if (index + 1 >= bootCode.size)			=> (true, ret(acc + arg.toInt))
 				case "jmp" if (index + arg.toInt >= bootCode.size) 	=> (true, ret(acc))
-				
+
 				// Normal execution
 				case "nop" => executePart2(bootCode, index + 1, 		acc)
 				case "acc" => executePart2(bootCode, index + 1, 		acc + arg.toInt)
@@ -61,13 +61,13 @@ object day8 {
 			// opSet.add failed, loop detected
 			case _ => (false, ret(acc))
 		}
-		
+
 		// Retrieve the result
 		part1 = executePart1(input)
 		println("Part 1: " + part1)
-		
+
 		for ((code, index) <- input.zipWithIndex.filterNot(_._1.contains("acc"))) {
-			/** 
+			/**
 			 * Slice the boot code into pre- and post-sections depending on the current code and its Index
 			 * Build it up like [Pre, current, Post] and then run executePart2 on each iteration
 			 */

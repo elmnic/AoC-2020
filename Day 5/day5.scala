@@ -14,12 +14,12 @@ object day5 {
 		// Part 1, find the maximum ID
 		var seatIDs = scala.collection.mutable.Map[String, Int]()
 		for (line <- source.getLines()) {
-			
+
 			val colPart = line.take(7)
 			val rowPart = line.takeRight(3)
 			var rows = List.range(0, 128)
 			var cols = List.range(0, 8)
-			
+
 			// Get the row
 			for (char <- colPart) {
 				char match {
@@ -27,7 +27,7 @@ object day5 {
 					case 'B' => rows = rows.takeRight(rows.length/2)
 				}
 			}
-			
+
 			// Get the col
 			for (char <- rowPart) {
 				char match {
