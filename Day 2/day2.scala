@@ -10,7 +10,7 @@ object day2 {
 
 		var part1 = 0
 		var part2 = 0
-		
+
 		for (line <- source.getLines()) {
 			// Process input
 			val input = line.split(" ")
@@ -19,12 +19,12 @@ object day2 {
 			val high = range(1).toInt
 			val letter = input(1).take(1)
 			val pwd = input(2)
-			
+
 			/**
 			  * Part 1, count occurrences of the given character in the string
 			  */
 			var count = pwd.filter(_.toString == letter).size
-			
+
 			if (count <= high && count >= low)
 				part1 += 1
 

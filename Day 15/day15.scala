@@ -44,9 +44,8 @@ object day15 {
 				// Move the most recent turns one step
 				ageMap.put(numberToSpeak, (turn, ageMap(numberToSpeak)._1))
 			}
+			// Add the number for the first time
 			else {
-
-				// Add the number for the first time
 				ageMap.put(numberToSpeak, (turn, -1))
 			}
 			previousNumber = numberToSpeak

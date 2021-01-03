@@ -2,8 +2,8 @@
  * https://adventofcode.com/2020/day/1
  */
 
-
 import scala.io.Source
+
 object day1 {
 	def main(args: Array[String]): Unit = {
 		val source = Source.fromFile("input.txt")
@@ -11,7 +11,7 @@ object day1 {
 
 		var part1 = 0
 		var part2 = 0
-		
+
 		for (line <- source.getLines()) {
 			val num = line.toInt
 			val diff1 = 2020 - num
