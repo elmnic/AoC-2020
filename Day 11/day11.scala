@@ -45,11 +45,6 @@ object day11 {
 				}).toList
 			).toList
 
-			// Equilibrium reached, break loop and return the occupied seats
-			if (next == prev) {
-				stable = true
-				part1 = next.flatten.filter(_ == '#').length
-			}
 			prev = next
 		}
 
