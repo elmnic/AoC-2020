@@ -21,8 +21,8 @@ object day15 {
 			ageMap.put(num, (idx+1, -1))
 			previousNumber = num
 		}
-
-		for (turn <- input.length to 30000000) {
+		var turn = input.length
+		while (turn <= 30000000) {
 
 			// Default number to speak
 			var numberToSpeak = 0
@@ -54,6 +54,8 @@ object day15 {
 				part1 = previousNumber
 			if (turn == 30000000)
 				part2 = previousNumber
+
+			turn += 1
 
 		}
 
